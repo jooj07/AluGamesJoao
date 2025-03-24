@@ -2,7 +2,6 @@ package br.com.alura.alugames.principal
 
 import br.com.alura.alugames.modelo.Aluguel
 import br.com.alura.alugames.modelo.Periodo
-import br.com.alura.alugames.modelo.planoAssinatura
 import br.com.alura.alugames.servicos.ConsumoApi
 import java.time.LocalDate
 
@@ -27,12 +26,6 @@ fun main() {
 
     println(gamerCaroline.jogosAlugados)
 
-    val gamerCamila = listaGamers.get(5)
-    gamerCamila.plano = planoAssinatura("PRATA",9.90, 3)
-
-    gamerCamila.alugaJogo(jogoResidentVllage,periodo1)
-    gamerCamila.alugaJogo(jogoSpider,periodo2)
-    gamerCamila.alugaJogo(jogoTheLastOfUs,periodo3)
-
-    println(gamerCamila.jogosAlugados)
+    val gamer2 = listaGamers.get(5)
+    
 }
