@@ -3,9 +3,21 @@ package br.com.alura.alugames.modelo
 class PlanoAssinatura(
     tipo: String,
     val mesalidade: Double,
-    val jogosIncluidos: Int): Plano(tipo) {
+    val jogosIncluidos: Int,
+    val percentualDescontoReputacao: Double
+    ): Plano(tipo) {
 
     override fun obterValor(aluguel: Aluguel): Double {
-    //parei aqui 
+    val totalJogosNoMes = aluguel.gamer.jogosDoMes(aluguel.periodo.dataInicial.monthValue).size+1
+
+        return if(totalJogosNoMes <= jogosIncluidos) {
+            0.0
+        } else {
+            var valorOriginal = super.obterValor(aluguel)
+            if(aluguel.gamer.media > 8) {
+                valorOriginal -= valorOriginal * percentualDescontoReputacao
+            }
+           return valorOriginal
+        }
     }
 }

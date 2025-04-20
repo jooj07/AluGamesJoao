@@ -6,7 +6,7 @@ import java.util.Scanner
 import kotlin.random.Random
 
 //todas as classes para guardar informações é recomendado usar data classes
-data class Gamer(var nome: String, var email: String) {
+data class Gamer(var nome: String, var email: String): Recomendavel {
     var dataNascimentoInterno: String? = null
     var usuarioInterno: String? = null // pode ser nulo
         set(value) {
@@ -20,6 +20,23 @@ data class Gamer(var nome: String, var email: String) {
     var plano: Plano = PlanoAvulso("BRONZE")
     val jogosBuscados = mutableListOf<Jogo?>()
     val jogosAlugados = mutableListOf<Aluguel>()
+    private val listaNotas: MutableList<Int> = mutableListOf<Int>()
+    val jogosRecomendados: MutableList<Jogo> = mutableListOf<Jogo>()
+
+    override val media: Double
+        get() = listaNotas.average()
+
+    override fun recomendar(nota: Int) {
+        if(nota > 10 || nota < 0) {
+            throw IllegalArgumentException("Nota inválida, apenas notas entre 1 a 10 são aceitas!")
+        }
+        listaNotas.add(nota)
+    }
+
+    fun recomendarJogo(jogo: Jogo, nota: Int) {
+        jogo.recomendar(nota)
+        jogosRecomendados.add(jogo)
+    }
 
     //uma segunda possibilidade de criar um construtor
     // dentro do this passamos quais parâmetros do construtor primário vamos usar
@@ -42,7 +59,13 @@ data class Gamer(var nome: String, var email: String) {
     }
 
     override fun toString(): String {
-        return "Gamer(nome='$nome', email='$email', dataNascimentoInterno=$dataNascimentoInterno, usuarioInterno=$usuarioInterno, idInterno=$idInterno)"
+        return "Gamer(\n" +
+                "nome='$nome\n', " +
+                "email='$email\n', " +
+                "dataNascimentoInterno=$dataNascimentoInterno\n, " +
+                "usuarioInterno=$usuarioInterno\n, " +
+                "idInterno=$idInterno\n" +
+                "Reputação=$media\n)"
     }
 
     fun criarIdInterno() {
@@ -67,6 +90,13 @@ data class Gamer(var nome: String, var email: String) {
         jogosAlugados.add(aluguel)
         return aluguel
     }
+
+    fun jogosDoMes(mes:Int): List<Jogo> {
+        return jogosAlugados
+            .filter { aluguel ->  aluguel.periodo.dataInicial.monthValue == mes}
+            .map { aluguel ->  aluguel.jogo}
+    }
+
 
     companion object {
         fun criarGamer(leitura: Scanner): Gamer {

@@ -1,9 +1,0 @@
-package br.com.alura.alugames.modelo
-
-data class Jogo(val titulo: String, var capa: String) {
-    var descricao: String? = null
-    //data classes ja tem um toString, mas eu posso adicionar esse personalizado
-    override fun toString(): String {
-        return " \nMeu jogo: \ntitulo:'$titulo', \ncapa:'$capa',\ndescricao:'$descricao'\n"
-    }
-}
